@@ -1,0 +1,48 @@
+name: Retrain BetGuard Model (Weekly 7 Days Update)
+
+on:
+  schedule:
+    - cron: '0 2 * * 0'  # Każda niedziela o 02:00 w nocy
+  workflow_dispatch:     # Możesz też ręcznie uruchomić
+
+jobs:
+  retrain:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        cd MlService
+        pip install -r requirements.txt
+
+    - name: Download latest raw data
+      run: |
+        python3 Scripts/download_raw_data.py
+
+    - name: Update dataset with last 7 days matches
+      run: |
+        python3 Scripts/update_dataset_last_7_days.py
+
+    - name: Retrain model
+      run: |
+        python3 MlService/app/train_model.py
+
+    - name: Commit retrained model
+      run: |
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "GitHub Actions Bot"
+        git add MlService/data/model/model.pkl MlService/data/training_report/training_report.txt MlService/data/dataset.csv MlService/data/raw
+        git commit -m "Auto-retrain: update model.pkl [skip ci]" || echo "No changes to commit"
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: main

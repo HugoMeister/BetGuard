@@ -1,0 +1,35 @@
+# Python
+ml-service/__pycache__/
+ml-service/*.pyc
+ml-service/*.pyo
+ml-service/*.pyd
+ml-service/.env
+ml-service/venv/
+ml-service/model/*.pkl
+
+# Go
+go-backend/bin/
+go-backend/pkg/
+*.exe
+*.out
+*.test
+
+# Streamlit (dashboard)
+dashboard/__pycache__/
+dashboard/.streamlit/
+
+# VSCode / edytory
+.vscode/
+.idea/
+*.swp
+
+# Systemowe
+.DS_Store
+Thumbs.db
+
+# Docker
+.env
+docker-compose.override.yml
+
+# GitHub Actions cache
+.github/workflows/.cache/

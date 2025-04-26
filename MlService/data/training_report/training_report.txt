@@ -1,0 +1,3 @@
+Model Training Report
+Accuracy: 0.6308
+ROC AUC: 0.7066

@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  go-backend:
+    build: ./GoBackend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ml-service
+
+  ml-service:
+    build: ./MlService
+    ports:
+      - "8000:8000"
+
+  dashboard:
+    build: ./DashBoard
+    ports:
+      - "8501:8501"
+    depends_on:
+      - go-backend
