@@ -1,21 +1,36 @@
-version: "3.9"
+version: '3.8'
 
 services:
+  ml-service:
+    build: ./MlService
+    container_name: ml-service
+    ports:
+      - "8000:8000"
+    networks:
+      - betguard-network
+
   go-backend:
     build: ./GoBackend
+    volumes:
+      - ./MlService/data:/app/data
+    container_name: go-backend
     ports:
       - "8080:8080"
     depends_on:
       - ml-service
-
-  ml-service:
-    build: ./MlService
-    ports:
-      - "8000:8000"
+    networks:
+      - betguard-network
 
   dashboard:
     build: ./DashBoard
+    container_name: dashboard
     ports:
       - "8501:8501"
     depends_on:
       - go-backend
+    networks:
+      - betguard-network
+
+networks:
+  betguard-network:
+    driver: bridge

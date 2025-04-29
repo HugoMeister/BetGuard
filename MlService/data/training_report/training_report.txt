@@ -1,3 +1,3 @@
 Model Training Report
-Accuracy: 0.6308
-ROC AUC: 0.7066
+Accuracy (multiclass): 0.4254
+ROC AUC (OVO macro): 0.5343
